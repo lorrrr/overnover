@@ -1,16 +1,179 @@
-<!DOCTYPE html><html><head>
-  
-  <script src="CCapture.all.min.js"></script>
 
-    <script src="p5.js"></script>
-    <script src="p5.dom.min.js"></script>
-    <script src="p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8">
-
-  </head>
-  <body>
-    <script src="sketch.js"></script>
+<!DOCTYPE html>
 
 
-</body></html>
+
+<style>
+body {
+	height:5000px;
+	padding:0;
+	background:RGB(34,56,83);
+}
+
+#imagesequence{
+
+  padding:0;
+	position:fixed;
+	left:0;
+	top:-30;
+	background:RGB(34,56,83);
+	opacity:90%;
+}
+
+#myimg{
+	animation: 6s ease-in-out 0s 1 zoom;
+}
+
+@keyframes zoom {
+  0% {
+    width:300%;
+
+  }
+  100% {
+    width:100%;
+
+  }
+}
+
+a{
+	position:fixed;
+	z-index:10;
+	bottom:15px;
+	right:15px;
+	font-family:Helvetica;
+	font-size:20px;
+	color:white;
+
+}
+
+.instruction {
+	font-family:Helvetica;
+	font-size:20px;
+	color:white;
+	opacity:100%;
+	position:fixed;
+	left:5%;
+	top:20%;
+  border-radius: 20px;
+	line-height: 10px;
+
+
+    -webkit-transition: opacity 1s ease-in;
+       -moz-transition: opacity 1s ease-in;
+        -ms-transition: opacity 1s ease-in;
+         -o-transition: opacity 1s ease-in;
+            transition: opacity 1s ease-in;
+  line-height: 40px;
+  text-align: center;
+	z-index:10;
+}
+
+.info {
+  opacity:100%;
+}
+
+
+}
+
+</style>
+
+
+
+
+<html>
+<head>
+	  <title>Time</title>
+	<script type="text/javascript" src="lib/TweenMax.min.js"></script>
+	<script type="text/javascript" src="lib/ScrollMagic.js"></script>
+	<script type="text/javascript" src="lib/plugins/animation.gsap.js"></script>
+	<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+</head>
+
+<body>
+<a>?</a>
+<p class="instruction" id="instruction">A DIGITAL CONCRETE POEM<br></p>
+
+<p class="instruction"id="instruction1"><br>(SCROLL TO VIEW)</p>
+<p id="info" style="position:fixed;
+	opacity:0%;
+
+	display:block;
+	position:fixed;
+	z-index:200;
+	background:white;
+	bottom:-3px;
+	right:35px;
+	font-family:Helvetica;
+	font-size:20px;
+	color:black;">This website is an experiment creating a concrete poem for the browser space.</p>
+<div id="imagesequence">
+	<img id="myimg" src="seq1/img0.png" style="width:100%" ><br>
+</div>
+<script>
+	// define images
+	var images = [];
+
+	for (var i=0; i<176;i++){
+		 images[i] = "seq1/img"+i+".png";
+
+	}
+
+	// TweenMax can tween any property of any object. We use this object to cycle through the array
+	var obj = {curImg: 0};
+
+	// create tween
+	var tween = TweenMax.to(obj, 0.5,
+		{
+			curImg: images.length - 1,	// animate propery curImg to number of images
+			roundProps: "curImg",				// only integers so it can be used as an array index
+			repeat: 10,									// repeat 3 times
+			immediateRender: true,			// load first image automatically
+			ease: Linear.easeNone,			// show every image the same ammount of time
+			onUpdate: function () {
+			  $("#myimg").attr("src", images[obj.curImg]); // set the image source
+				console.log(obj.curImg);
+			}
+		}
+	);
+
+	// init controller
+	var controller = new ScrollMagic.Controller();
+
+	// build scene
+	var scene = new ScrollMagic.Scene({ duration: 4000})
+					.setTween(tween)
+
+					.addTo(controller);
+
+</script>
+
+
+<script>
+	$( "a" ).click(function() {
+	  $( "#info" ).toggleClass( "info" );
+		if ($( "#info" ).hasClass("info") ){
+			$("#info").fadeTo("slow", 0);
+		}
+		if (!$( "#info" ).hasClass("info") ){
+			$("#info").fadeTo("slow", 90);
+		}
+	});
+
+
+	window.onload = function() {
+	  var ins = document.getElementById('instruction');
+
+	  ins.style.opacity = "0%";
+
+
+		ins=document.getElementById('instruction1');
+		 ins.style.opacity = "0%";
+	};
+
+
+	</script>
+</body>
+</html>
